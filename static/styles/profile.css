@@ -1,0 +1,31 @@
+.all-info {
+    font-size: 1.3em;
+}
+
+h3 {
+    text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.row span{
+    margin-left: 0.5em;
+    font-weight: bold;
+}
+
+.stat p, 
+.pers-data p{
+    margin-inline: 3em;
+}
+
+@media (max-width: 770px) {
+    .container-fluid {
+        font-size: 1em;
+    }
+
+    .stat p, 
+    .pers-data p{
+        text-align: center;
+    }
+}
+

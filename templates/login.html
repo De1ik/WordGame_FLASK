@@ -1,0 +1,26 @@
+{% extends 'registration.html' %}
+
+
+{% block central %}
+<div class="col-lg-4 col-md-4">
+  <div class="registration-user login">
+    <h1>Login</h1>
+    <form action="/login" method="post">
+      <p><input type="email" class="name-registration" name="email" placeholder="email" minlength="5" required></p>
+      <p><input type="password" class="name-registration" name="password" placeholder="password" minlength="5" required></p>
+      {% for category, msg in get_flashed_messages(True) %}
+      <div class="flash {{category}}">{{msg}}</div>
+      {% endfor %}
+      <div class="remember-me">
+          <div class="default-box">
+            <p>
+              <input type="checkbox" name="password">
+              <label for="">Remember me</label>
+            </p>
+          </div>
+      </div>
+      <p><input class="btn" value='Submitt' type='SUBMIT'></p>
+    </form>
+  </div>
+</div>
+{% endblock %}

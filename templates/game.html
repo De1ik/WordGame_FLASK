@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block ul %}
+<div>
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="/game">Game</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/rules">Rules</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/reviews">Reviews</a>
+    </li>
+  </ul>
+</div>
+<div class="profile-div">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link text-profile" href="/profile">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="img-profile" href="/profile"><img class="profile-img" src="/static/img/person.svg" alt="profile"></a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-lg-4 matches">
+
+      <div class="cur-match">
+        <p class="type-match">Current Matches<p>
+        <p>Direct match:  <span class="direct-match">{{direct_match}}</span></p>
+        <p>Indirect match: <span class="indirect-match">{{indirect_match}}</span></p>
+      </div>
+
+      <div class="global-match ">
+        <p class="type-match">Mathes All Time<p>
+        <p>Direct match: <span class="direct-match">{{global_direct}}</span></p>
+        <p>Indirect match: <span class="indirect-match">{{global_indirect}}</span></p>
+      </div>
+
+    </div>
+
+    <div class="col-lg-4 game">
+      <h1>WORDGAME</h1>
+      {% if not client_word or client_word != find_word %}
+        <form class="form-word-text" method="POST" action="/game">
+          <label>Write your word:</label><br>
+          <input name='word' type='TEXT' autocomplete="off" maxlength="6" minlength="6" width='60' required>
+          <p>When you're ready, click this button:</p>
+          <p><input value='Do it!' type='SUBMIT'></p>
+        </form>
+      {% endif %}
+    
+      <div class="letter">
+        {% if not client_word %}
+          <p class="no-word-answer">Try Guess Word</p>
+        {% else %}
+          {% for letter in range(word_len) %}
+            {% if client_word[letter] == find_word[letter] %}
+              <span style="background-color: aquamarine;" class="lt">{{client_word[letter]}}</span>
+            {% elif client_word[letter] == ' ' %}
+              <span style="background-color: rgb(22, 131, 190);" class="lt">{{client_word[letter]}}</span>
+            {% elif client_word[letter] in indirect_match %}
+              <span style="background-color: rgb(198, 165, 31);" class="lt">{{client_word[letter]}}</span>
+            {% else %}
+              <span style="background-color: rgb(22, 131, 190);" class="lt">{{client_word[letter]}}</span>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="win-word">
+        {% if client_word and client_word == find_word %}
+          <h4>Congratulate! you won</h4>
+        {% endif %}
+      </div>
+
+      {% if client_word and client_word == find_word %}
+      <div class="play-again">
+        <a href="/game"><p>play again</p></a>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+      <div class="words-history">
+        <p class="word-history-header">Your Word History</p>
+        <div class="word-list">
+          {% for word in word_history %}
+            <p>{{word}}</p>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="attempt-counter">
+        {% if not client_word or client_word != find_word %}
+          <p>Attempt number: <span>{{attempt_number}}</span></p>
+        {% else %}
+          <p>To guess word you used: <span>{{attempt_number}} attempt/s</span></p>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+
+

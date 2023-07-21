@@ -1,0 +1,198 @@
+.nav-link,
+#nav-bar {
+    font-size: 1.1em;
+    color: #ffffff;
+    padding: 0.7rem;
+}
+
+.navbar-nav .nav-link.active{
+    color: rgb(90, 93, 95);
+}
+
+.navbar-toggler {
+    background-color: #ffffff;
+}
+
+.profile-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-div {
+    margin-right: 1em;
+}
+
+.profile-img{
+    border-radius: 0.5em;
+    background-color: rgb(251, 251, 251);
+    height: 2.5em;
+    width: 2.5em;
+}
+
+.text-profile {
+    display: none;
+}
+
+.profile-img.current {
+    background-color: rgb(162, 158, 158);
+}
+
+
+.profile-img:hover {
+    background-color: rgb(162, 158, 158);
+}
+
+@media (max-width: 991.9px) {
+    .profile-between {
+        display: block;
+    }
+    .img-profile {
+        display: none;
+    }
+
+    .text-profile {
+        display: block;
+    }
+}
+
+
+
+/* nav end */
+
+h1 {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+/* MATCHES LEFT */
+.type-match {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.cur-match,
+.global-match {
+    margin-top: 2.5em;
+    text-align: center;
+}
+
+.cur-match span,
+.global-match span {
+    display: block;
+    min-height: 36px;
+    font-size: 1.2em;
+    background-color: #C4DFE6;
+    color: #003b46;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    border-width: 0.5px;
+}
+
+.direct-match {
+    letter-spacing: 10px;
+    border-width: 1.5px;
+    padding-left: 7px;
+    padding-bottom: 5px;
+}
+
+.indirect-match {
+    padding-inline: 5px;
+    padding-bottom: 5px;
+
+}
+
+
+/* GAME CLASS CENTER */
+
+.game {
+    display: block;
+}
+
+.play-again{
+    display: flex;
+    justify-content: center;
+}
+
+.play-again p{
+    width: 10em;
+    margin-top: 2em;
+    padding: 0.5em;
+    font-size: 1.3em;
+    border-style: solid;
+    border-width: 1.5px;
+    background-color: #0b697c;    
+}
+
+.play-again a{
+    display: block;
+    padding: 0;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    
+}
+
+.play-again p:hover {
+    background-color: #064551; 
+}
+
+.form-word-text {
+    text-align: center;
+}
+
+
+.letter {
+    display: flex;
+    justify-content: center;
+}
+
+.no-word-answer {
+    font-size: 2em;
+    margin-top: 1em;
+}
+
+.letter span {
+    display: block;
+    text-align: center;
+    font-size: 1.5em;
+    padding: 0.3em;
+    width: 53px;
+    height: 55px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+.win-word {
+    text-align: center;
+    margin-top: 1em; 
+}
+
+/* MATCHES RIGHT */
+
+.words-history{
+    text-align: center;
+    margin-top: 3em;
+}
+
+.word-history-header {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.word-list {
+    display: inline-block;
+    border-style: solid;
+    border-width: 1.5px;
+    padding-inline: 3em;
+}
+
+.attempt-counter {
+    text-align: center;
+    margin-top: 1em; 
+}
+
+.attempt-counter span{
+    font-weight: bold;
+}

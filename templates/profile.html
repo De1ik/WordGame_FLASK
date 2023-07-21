@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/profile.css">
+{% endblock %}
+
+{% block ul %}
+<div>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/game">Game</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/rules">Rules</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/reviews">Reviews</a>
+      </li>
+    </ul>
+</div>
+<div class="profile-div">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link text-profile" href="/profile">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="img-profile" href="/profile"><img class="profile-img current" src="/static/img/person.svg" alt="profile"></a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="all-info">
+    <h1>Profile</h1>
+    <div class="container-fluid statistics">
+        <h3>Statistics</h3>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 stat">
+                <p>Total number of guessed words: <span>{{numb_guessed}}</span></p>
+                <p>Number of words guessed on the first try: <span>{{first_try}}</span></p>
+                <p>Average attempts per word: <span>{{average_attemp}}</span></p>
+            </div>
+        
+            <div class="col-lg-6 col-md-6 stat">
+                <p>Total number of attempts: <span>{{numb_attempt}}</span></p>
+                <p>Number of words guessed from three attempts: <span>{{three_attemp}}</span></p>
+                <p>Maximum attempts: <span>{{max_attemp}}</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid personal-data">
+        <h3>Personal Data</h3>
+        <div class="row">
+            <div class="col-lg-6 col-md-12 pers-data">
+                <p>Your name: <span>{{ name}}</span></p>
+                <p>Your email: <span>{{email}}</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
