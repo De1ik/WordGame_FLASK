@@ -1,5 +1,10 @@
+from werkzeug.security import check_password_hash
+from flask import session
+
+
 from user_db import UseDb
-from werkzeug.security import generate_password_hash, check_password_hash
+from login_decorator import login_stats
+from update_db_stats import UpdateStats
 
 def email_db_check(db_config, email):
     with UseDb(db_config) as cursor:
@@ -24,11 +29,25 @@ def sign_up_page(db_config, name, email, password):
             cursor.execute(id_sql, [email])
             res = cursor.fetchall()
             user_id = res[0][0]
+            set_default_stats(db_config, user_id)
             return user_id
     except Exception as ex:
         print(ex)
         return False
     
+
+def set_default_stats(db_config, user_id):
+    try:
+        with UseDb(db_config) as cursor:
+            SQL = """INSERT INTO statistics
+                    VALUES 
+                    (%s, 0, 0, 0, 0, 0, 0)"""
+            cursor.execute(SQL, [user_id])
+            print('SET DEFAULT STATS')
+    except Exception as ex:
+        print('set default stats problem')
+        print(ex)
+
 
 def login_page(db_config, email, password):
     try:
@@ -40,6 +59,7 @@ def login_page(db_config, email, password):
                 user_id, db_password, email_count = result
                 if email_count>0 and check_password_hash(db_password, password):
                     return user_id
+                
     except Exception as ex:
         print(ex)
         return False
@@ -87,4 +107,27 @@ def profile_persdata(db_config, user_id):
     except Exception as ex:
         print(ex)
         return False
+    
+
+@login_stats  
+def db_update_stats(db_config, user_id):
+    upd = UpdateStats(db_config, user_id)
+    if session.get('client_word') == session.get('find_word'):
+        attempts = session.get('attempt_number')
+        upd.total_guessed()
+        upd.attempt_number(attempts)
+        upd.max_attempt(attempts)
+    upd.total_attempt()
+    upd.average_attempt()
+
+
+
+
+    
+
+
+    
+    
+    
+
     

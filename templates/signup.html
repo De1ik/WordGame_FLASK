@@ -13,14 +13,7 @@
       {% for category, msg in get_flashed_messages(True) %}
       <div class="flash {{category}}">{{msg}}</div>
       {% endfor %}
-      <div class="remember-me">
-        <div class="default-box">
-          <p>
-            <input type="checkbox" name="password">
-            <label for="">Remember me</label>
-          </p>
-        </div>
-      </div>
+
       <p><input class="btn" value='Submitt' type='SUBMIT'></p>
     </form>
   </div>

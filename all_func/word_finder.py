@@ -1,24 +1,38 @@
 from all_func import set_word
 from flask import session
+from sql_models import db_update_stats
 
 #number of letters
 word_len = 6
 word_history_lens = 6
 
-def reset(user_id):
-   session[f'{user_id}-global_direct'] = ['_']*word_len
-   session[f'{user_id}-global_indirect'] = list()
-   session[f'{user_id}-word_history'] = [' ']*word_history_lens
-   session[f'{user_id}-last_time_win'] = False
-   session[f'{user_id}-attempt_number'] = 0
-   session[f'{user_id}-find_word'] = set_word.set_6_word().lower()
+def reset():
+   """Ресетит все данные"""
+   print('RESET WAS DONE')
+   session['global_direct'] = ['_']*word_len
+   session['global_indirect'] = list()
+   session['word_history'] = [' ']*word_history_lens
+   session['last_time_win'] = False
+   session['attempt_number'] = 0
+   session['find_word'] = set_word.set_6_word().lower()
 
-   return session[f'{user_id}-global_direct'], session[f'{user_id}-global_indirect'],session[f'{user_id}-word_history'], session[f'{user_id}-last_time_win']
+   return session['global_direct'], session['global_indirect'], session['word_history'], session['last_time_win']
 
-# проверяет выиграш ли последняя игра => ресет и меня
-def check_win(user_id):
-    if session[f'{user_id}-last_time_win'] == True:
-        reset(user_id)
+def check_client_session():
+    #если пользователь первый раз - добавить его в сессии и запустить игру
+    global_direct = direct_match = ' '.join(['_']*word_len)
+    if 'user_game' not in session:
+        session['user_game'] = True
+        reset()
+    return global_direct, direct_match
+
+
+def check_win(find_word, client_word):
+    if session[f'last_time_win'] == True:
+        reset()
+    elif find_word==client_word:
+        session[f'last_time_win']=True
+        session[f'client_word'] = ''
 
 
 def find_indirect_match(find_word, prev_ind, global_direct, indirect_match):
@@ -32,46 +46,50 @@ def find_indirect_match(find_word, prev_ind, global_direct, indirect_match):
     return result
 
 
-def check_matching(find_word, client_word, user_id):
-# -------------------МОЖНО ВЫНЕСТИ В НОВУЮ ФУНКЦИЮ--------------------------
-
-    # проверяет была ли прошлая игра победной - если да, то сбросс результата
-    check_win(user_id)
-
-
-    if find_word==client_word:
-        session[f'{user_id}-last_time_win']=True
-        session[f'{user_id}-client_word'] = ''
-
-
-#---------------------------------------------------------------------------
-    #добавляем в общий список наши слова
+def add_to_wordlist(client_word):
+    """Если слово не равно последнему, то записываем его в общий список, возвращаем последние 5 слов"""
     try:
-        if session[f'{user_id}-word_history'][-1] != client_word:
-            session[f'{user_id}-word_history'].append(client_word)
+        if session['word_history'][-1] != client_word:
+            session['word_history'].append(client_word)
     except:
-        session[f'{user_id}-word_history'].append(client_word)
+        session['word_history'].append(client_word)
+    return session['word_history'][-1:-6:-1]
 
+
+def set_dir_match(client_word, find_word):
+    """находим прямое вхождение и возвращаем, copy_find_word будет использоваться для поиска непрямого вхождения"""
     copy_find_word = find_word
     direct_match = ['_']*word_len
-
-
     for index in range(word_len):
         if find_word[index] == client_word[index]:
             # check
             direct_match[index] = client_word[index]
-            session[f'{user_id}-global_direct'][index] = client_word[index]
+            session['global_direct'][index] = client_word[index]
             #----------------------------------------
             copy_find_word = copy_find_word.replace(client_word[index], '', 1)
-
-    indirect_match = set(copy_find_word)&set(client_word)
-    
-    result_gl_direct = set(find_indirect_match(find_word=find_word, prev_ind=session[f'{user_id}-global_indirect'], global_direct=session[f'{user_id}-global_direct'], indirect_match=indirect_match))
-    session[f'{user_id}-global_indirect'] = list(result_gl_direct)
-    
-    word_history = session[f'{user_id}-word_history'][-1:-6:-1]
-    indirect_match = ' '.join(indirect_match)
-    
-    return direct_match, indirect_match, session[f'{user_id}-global_direct'], session[f'{user_id}-global_indirect'], word_history
+    return copy_find_word, ' '.join(direct_match)
 
 
+def word_finder(find_word, client_word):
+    """соединяет функции и возвращает всю нужную информацию"""
+    check_win(find_word=find_word, client_word=client_word)
+
+    word_history = add_to_wordlist(client_word)
+
+    copy_find_word, direct_match = set_dir_match(client_word =client_word, find_word=find_word)
+
+    indirect_match = ' '.join(set(copy_find_word)&set(client_word))
+
+    result_gl_indirect = set(find_indirect_match(find_word=find_word, 
+                                               prev_ind=session['global_indirect'], 
+                                               global_direct=session['global_direct'], 
+                                               indirect_match=indirect_match))
+    session['global_indirect'] = list(result_gl_indirect)
+    
+    return direct_match, indirect_match, ' '.join(session['global_direct']), ' '.join(session['global_indirect']), word_history
+
+
+def update_all_info(client_word, db_config, user_id):
+    session['attempt_number'] = session.get('attempt_number', 0) + 1
+    session['client_word'] = client_word
+    db_update_stats(db_config=db_config, user_id=user_id)
