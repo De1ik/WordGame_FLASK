@@ -78,6 +78,54 @@ body {
     background-color: rgb(59, 58, 58);
 }
 
+/* LOG OUT */
+
+.log-out {
+    padding-bottom: 2em;
+}
+
+.logout {    
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.confirmation input{
+    display: inline;
+    margin-top: 1em;
+    border-style: solid;
+    border-width: 1.5px;
+    border-radius: 5px;
+}
+
+.success {
+    padding-inline: 23px;
+    border-color: rgb(203, 11, 11);
+    color: rgb(208, 22, 22);
+    background-color: rgb(224, 223, 223);
+
+}
+
+.cancell {
+    padding-inline: 25px;
+    border-color: rgb(29, 206, 76);
+    color: rgb(29, 206, 76);
+    background-color: rgb(224, 223, 223);
+}
+
+.success:hover {
+    color: rgb(244, 244, 244);
+    background-color: rgb(179, 27, 27);
+}
+
+.cancell:hover {
+    color: rgb(244, 244, 244);
+    background-color: rgb(29, 206, 76);
+
+}
+
+
+
+
 
 /* ERRORS */
 

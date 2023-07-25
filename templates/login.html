@@ -6,20 +6,20 @@
   <div class="registration-user login">
     <h1>Login</h1>
     <form action="/login" method="post">
-      <p><input type="email" class="name-registration" name="email" placeholder="email" minlength="5" required></p>
-      <p><input type="password" class="name-registration" name="password" placeholder="password" minlength="5" required></p>
+      {{form.hidden_tag() }}
+      <p>{{ form.email(class="name-registration", placeholder="email") }}</p>
+      <p>{{ form.psw(class='name-registration', placeholder="password") }}</p>
+      <div class="remember-me">
+        <div class="default-box">
+          <p>{{ form.remember() }}</p>
+          <label for="">Remember me</label>
+        </div>
+      </div>
+      <p>{{ form.submit(class="btn") }}</p>
       {% for category, msg in get_flashed_messages(True) %}
       <div class="flash {{category}}">{{msg}}</div>
       {% endfor %}
-      <div class="remember-me">
-          <div class="default-box">
-            <p>
-              <input type="checkbox" name="checkbox">
-              <label for="">Remember me</label>
-            </p>
-          </div>
-      </div>
-      <p><input class="btn" value='Submitt' name="checkbox" type='SUBMIT'></p>
+      <p>Do not have an account? <a href="/sign-up">Sign Up</a></p>
     </form>
   </div>
 </div>

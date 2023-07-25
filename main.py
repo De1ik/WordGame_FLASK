@@ -1,13 +1,13 @@
-from flask import Flask, render_template, request, session, redirect, flash , url_for
+from flask import Flask, render_template, request, session, redirect, flash , url_for, make_response
 from werkzeug.security import generate_password_hash
 from datetime import timedelta
 import os
 
-from all_func import word_finder
+from all_func import word_finder, email_validation
 import setting
-from sql_models import email_db_check, sign_up_page, login_page, review_page, profile_get_stats, profile_persdata, db_update_stats
+from sql_models import email_db_check, sign_up_page, login_page, review_page, profile_get_stats, profile_persdata
 from login_decorator import login_status
-
+from wtf_forms import LoginForm, SignUpForm
 
 
 
@@ -54,7 +54,6 @@ def game():
         #если пост - значит пользователь что то написал -> нужно обновить количество попыток и взять клиентское слово, обновляет стату если зареган
         client_word = request.form['word'].lower()
         word_finder.update_all_info(client_word=client_word, db_config=app.config.get('dbconfig'), user_id=session.get('logged_id'))
-        # db_update_stats(db_config=app.config.get('dbconfig'), user_id=session.get('logged_id'))
     try:
         #Даже если гет запрос, но человек до этого уже играл -> вернуть прошлое слово
         client_word = session['client_word']
@@ -102,7 +101,7 @@ def profile():
     try:
         total_guessed, total_attempt, first_try, third_try, average_attempt, max_attempt = profile_get_stats(db_config=app.config['dbconfig'], user_id=session['logged_id'])
         name, email = profile_persdata(db_config=app.config['dbconfig'], user_id=session['logged_id'])
-        return render_template('profile.html',  title = 'profile', 
+        return render_template('profile.html', title = 'profile',
                             name=name, email = email,
                             numb_guessed=total_guessed, numb_attempt=total_attempt,
                             first_try=first_try, three_attemp=third_try,
@@ -110,18 +109,22 @@ def profile():
     except Exception as ex:
         print(ex)
         return 'some problems'
+    
 
 
 @app.route('/sign-up', methods=['GET', 'POST'])
 def signup():
-    if request.method == 'POST':
-        # user_id = request.remote_addr
-        name = request.form['name']
-        password = request.form['password']
-        conf_password = request.form['conf_password']
-        email = request.form['email']
+    form = SignUpForm()
 
-        if email_db_check(db_config=app.config['dbconfig'], email=email):
+    if form.validate_on_submit():
+        name = form.name.data
+        password = form.psw.data
+        conf_password = form.psw_confirm.data
+        email = form.email.data
+
+        if not email_validation.valid_email(email):
+            flash('email is not valid', category='error')
+        elif email_db_check(db_config=app.config['dbconfig'], email=email):
             flash('email already registered', category='error')
         elif password != conf_password:
             flash('Passwords not equals!', category='error')
@@ -129,11 +132,34 @@ def signup():
             sign_up_page(db_config=app.config['dbconfig'], name=name, email=email, password=generate_password_hash(password))
             return redirect('/login')
         
-    return render_template('signup.html')
+    return render_template('signup.html', form=form)
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.psw.data
+        checkbox_value = form.remember.data
+
+        logid = login_page(db_config=app.config['dbconfig'], email=email, password=password)
+        print(f'YOUR CURRENT LOG_ID: {logid}')
+        if logid:
+            if checkbox_value:
+                session['checkbox'] = True
+            session['logged_id'] = logid
+            url = session.get('path') if session.get('path') else '/'
+            print('EVERYTHING IS FINE')
+            return redirect(url)
+        flash('wrong password or email', category='error')
+
+    return render_template('login.html', form=form)
+
+
+
+
+
     if request.method == 'POST':
         # user_id = request.remote_addr
         email = request.form.get('email')
@@ -153,12 +179,17 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST', 'GET'])
 @login_status
 def logout():
-    session.clear()
-    # session.pop('logged_id')
-    return 'LOG OUT'
+    if request.method == 'POST':
+        res = request.form.get('logout')
+        print(f'RES {res}')
+        if res == 'Yes':
+            session.clear()
+            return redirect('/login')
+        return redirect('/profile')
+    return render_template('logout.html')
 
 
 @app.errorhandler(404)

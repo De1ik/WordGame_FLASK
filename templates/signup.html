@@ -6,15 +6,17 @@
   <div class="registration-user sign-up">
     <h1 >Sign Up</h1>
     <form action="/sign-up" method="post">
-      <p><input type="text" class="name-registration" name="name" placeholder="name" minlength="4" required></p>
-      <p><input type="email" class="name-registration" name="email" placeholder="email" minlength="5" required></p>
-      <p><input type="password" class="name-registration" name="password" placeholder="password" minlength="5" required></p>
-      <p><input type="password" class="name-registration" name="conf_password" placeholder="confirm password" minlength="5" required></p>
-      {% for category, msg in get_flashed_messages(True) %}
+      {{ form.hidden_tag() }}
+      <p>{{ form.name(class="name-registration", placeholder="name", minlength="4") }}</p>
+      <p>{{ form.email(class="name-registration", placeholder="email") }}</p>
+      <p>{{ form.psw(class="name-registration", placeholder="password", minlength="5") }}</p>
+      <p>{{ form.psw_confirm(class="name-registration", placeholder="confirm password", minlength="5") }}</p>
+      <p>{% for category, msg in get_flashed_messages(True) %}</p>
       <div class="flash {{category}}">{{msg}}</div>
       {% endfor %}
 
-      <p><input class="btn" value='Submitt' type='SUBMIT'></p>
+      <p>{{ form.submit(class='btn', value='Submit') }}</p>
+      <p>Do you have an account? <a href="/login">Log In</a></p>
     </form>
   </div>
 </div>
