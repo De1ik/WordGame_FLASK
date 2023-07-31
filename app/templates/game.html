@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+
+
+{% block body %}
+
+
+<div class="container-fluid">
+  <div class="row">
+
+    
+    <div class="col-lg-4 matches">
+
+      <div class="cur-match">
+        <p class="word-match-header">Current Matches<p>
+        <div class="type-match">
+          <p class="type-match-header">Direct match:</p>
+          <span class="direct-match shadow">{{direct_match}}</span>
+          <p class="type-match-header">Indirect match:</p>
+          <span class="indirect-match shadow">{{indirect_match}}</span>
+        </div>
+      </div>
+
+      <div class="global-match ">
+        <p class="word-match-header">Mathes All Time<p>
+        <div class="type-match">
+          <p class="type-match-header">Direct match:</p>
+          <span class="direct-match shadow">{{global_direct}}</span>
+          <p class="type-match-header">Indirect match:</p>
+          <span class="indirect-match shadow">{{global_indirect}}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-4 game">
+      <h1>WORDLE</h1>
+      {% if not client_word or client_word != find_word %}
+        <form class="form-word-text" method="POST" action="/game">
+          {{ form.hidden_tag() }}
+          <label>Write your word:</label><br>
+          <p>{{ form.word(class="review-text", autocomplete="off", value="") }}</p>
+          {% for category, msg in get_flashed_messages(True) %}
+            <div class="flash {{category}} shadow rounded game-flash">{{msg|safe}}</div>
+          {% endfor %}
+          <p>When you're ready, click the button:</p>
+          <p>{{ form.submit(class="btn game-btn") }}</p>
+        </form>
+
+      {% endif %}
+    
+      <div class="g-letter">
+        {% if not client_word %}
+          <p class="no-word-answer"><span class="w1">Try</span> <span class="w2">Guess</span> <span class="w3">The</span> <span class="w4">Word</span></p>
+        {% else %}
+        <div class="letter">
+          {% for letter in range(word_len) %}
+          {% if client_word[letter] == find_word[letter] %}
+          <span style="background-color: rgb(62, 235, 131); color: rgb(17, 124, 62);" class="lt">{{client_word[letter]}}</span>
+          {% elif client_word[letter] == ' ' %}
+          <span style="background-color: rgb(101, 176, 216);" class="lt">{{client_word[letter]}}</span>
+          {% elif client_word[letter] in indirect_match %}
+          <span style="background-color: rgb(250, 209, 104); color: rgb(194, 117, 24);" class="lt">{{client_word[letter]}}</span>
+          {% else %}
+          <span style="background-color: rgb(51, 174, 240); color: rgb(22, 94, 133);" class="lt">{{client_word[letter]}}</span>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="win-word">
+        {% if client_word and client_word == find_word %}
+          <h4>Congratulate! you won</h4>
+        {% endif %}
+      </div>
+
+      {% if client_word and client_word == find_word %}
+      <div class="play-again">
+        <a href="/game"><p>play again</p></a>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+      <div class="words-history ">
+        <p class="word-history-header">Your Word History</p>
+        <div class="word-list shadow">
+          {% for word in word_history %}
+            {% if word != '' and word != ' ' %}
+              <p class="word-wh">{{word}}</p>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="attempt-counter">
+        {% if not client_word %}
+          <p></p>
+        {% elif not client_word or client_word != find_word %}
+          <p>Attempt number: <span>{{attempt_number}}</span></p>
+        {% else %}
+          {% if attempt_number==1 %}
+            <p>To guess word you used: <span>{{attempt_number}} attempt</span></p>
+          {% else %}
+            <p>To guess word you used: <span>{{attempt_number}} attempts</span></p>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+
+

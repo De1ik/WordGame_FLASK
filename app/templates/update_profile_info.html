@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/registration.css">
+{% endblock %}
+
+{% block body %}
+<div class="registration-user update-info">
+    <h1>Update Info</h1>
+    <form action="/update-info" method="post">
+      {{ form.hidden_tag() }}
+      <p>{{ form.name(class='name-registration', value=current_user.name) }}</p>
+      <p>{{ form.email(class="name-registration", value=current_user.email) }}</p>
+      <p>{{ form.submit(class="btn")}}</p>
+      {% for category, msg in get_flashed_messages(True) %}
+        <div class="flash {{category}} shadow rounded">{{msg}}</div>
+      {% endfor %}
+    </form>
+</div>
+
+{% endblock %}

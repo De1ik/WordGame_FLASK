@@ -1,0 +1,33 @@
+.rule-img,
+#carouselExampleDark {
+    max-width: 80%; /* Устанавливаем максимальную ширину картинки в 100% от родительского элемента */
+    height: auto; /* Автоматически рассчитываем высоту, чтобы сохранить пропорции картинки */
+    display: block; /* Убираем возможные пробелы под картинкой */
+    margin: 0 auto;
+    margin-bottom: 2em;
+    margin-top: 2em;
+}
+
+.content {
+    margin-inline: 4em;
+    font-size: 1.2em;
+}
+
+.content span{
+    font-weight:600;
+}
+
+
+@media (max-width: 900px) {
+    .rule-img,
+    #carouselExampleDark {
+        max-width: 100%;
+        margin-inline: 0;
+    }
+}
+
+@media (max-width: 700px) {
+    .content {
+        margin-inline: 2em;
+    }
+}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/review.css">
+{% endblock %}
+
+
+{% block body %}
+<h1>FeedBack</h1>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-lg-6 col-md-12 page-text">
+      <h3 class="header-rev">Hi everyone!</h3>
+      <p class="text-rev">Here you can write you review. Your feedback will help find out the mistakes and improve the project. If you found any problems in inteructions with website pls write it in detail. <br><br>Thanks for each comments!</p>
+    </div>
+    
+    <div class="col-lg-5 col-md-12 review">
+      <div class="rev-comp">
+        <form class="form-word-text " method="POST" action="/reviews">
+          <h3 class="form-label">Write your review:</h3>
+          {% for category, msg in get_flashed_messages(True) %}
+          <div class="flash {{category}}">{{msg}}</div>
+          {% endfor %}
+          {{ form.hidden_tag() }}
+          <p>{{ form.review(class="review-text shadow-sm") }}</p>
+          <p>{{ form.submit(class="btn") }}</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

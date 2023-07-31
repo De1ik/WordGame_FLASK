@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/profile.css">
+{% endblock %}
+
+
+{% block body %}
+<div class="all-info">
+  <h1>Profile</h1>
+  <div class="statistics shadow">
+    <h3>Statistics</h3>
+    <div class="profile">
+      <div class="cont-st">
+        <div class="stats">
+          <p>Total number of guessed words: <span>{{numb_guessed}}</span></p>
+          <p>Words guessed in first try: <span>{{first_try}}</span></p>
+          <p>Average attempts per word: <span>{{average_attemp}}</span></p>
+        </div>
+       
+        <div class="stats">
+          <p>Total number of attempts: <span>{{numb_attempt}}</span></p>
+          <p>In three attempts guessed: <span>{{three_attemp}}</span></p>
+          <p>Maximum attempts per word: <span>{{max_attemp}}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  <div class="personal-data shadow">
+    <h3>Personal Data</h3>
+      <div class="profile">
+        <div class="cont-st">
+
+                <div class="pers-data">
+                  <div>
+                    <p>Your nickname: <span>{{current_user.name}}</span></p>
+                  </div>
+                </div>
+
+                <div class="pers-data">
+                  <div>
+                    <p>Your email: <span>{{current_user.email}}</span></p>
+                  </div>
+                </div>
+                
+        </div>         
+      </div>
+      <div class="update-persdata">
+              <a href="/update-info" class="btn btn-primary btn-update">Update Info</a>
+      </div>
+  </div>
+                  
+        
+        
+  <div class="logout shadow">
+    <h3>Log Out</h3>
+    <div class="lo-cont">
+      <p>After logging out of your account, you will need to log into your account again to access your statistics.</p>
+      <a href="/logout" class="btn btn-primary btn-logout">Log Out</a>
+    </div>
+  </div>
+    
+{% endblock %}

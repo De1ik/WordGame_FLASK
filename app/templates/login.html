@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/registration.css">
+{% endblock %}
+
+{% block body %}
+  <div class="registration-user login">
+    <h1>Login</h1>
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p>{{ form.email(class="name-registration", placeholder="email") }}</p>
+      <p>{{ form.psw(class='name-registration', placeholder="password") }}</p>
+      <div class="remember-me">
+        <div class="default-box">
+          <p>{{ form.remember() }}</p>
+          <label for="">Remember me</label>
+        </div>
+      </div>
+      <p>{{ form.submit(class="btn") }}</p>
+      {% for category, msg in get_flashed_messages(True) %}
+        <div class="flash {{category}} shadow rounded">{{msg}}</div>
+      {% endfor %}
+      <p>Do not have an account? <a href="/sign-up">Sign Up</a></p>
+    </form>
+  </div>
+{% endblock %}

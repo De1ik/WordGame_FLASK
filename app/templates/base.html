@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    {% block head %}
+    {% endblock %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% block title %}
+    {% if title %}
+        <title>WordGames - {{title}}</title>
+    {% else %}
+        <title>WordGames</title>
+    {% endif %}
+    {% endblock %}
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" id="nav-bar" href="/">WordGame</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse profile-between" id="navbarNav">
+                {% block ul %}
+                  <div class="nav-bar-left">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link {{index}}" aria-current="page" href="{{url_for('index')}}">Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link {{games}}" href="{{url_for('games')}}">Game</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link {{rules}}" href="{{url_for('rules')}}">Rules</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link {{review}}" href="{{url_for('review')}}">Review</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="profile-div">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link text-profile {{profile}}" href="{{url_for('profile')}}">Profile</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="img-profile" href="{{url_for('profile')}}"><img class="profile-img" src="/static/img/person.svg" alt="profile"></a>
+                      </li>
+                    </ul>
+                  </div>
+                {% endblock %}
+              </div>
+            </div>
+          </nav>
+    </header>
+
+
+
+    {% block body %}
+    {% endblock %}
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

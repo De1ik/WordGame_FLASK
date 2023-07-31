@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/registration.css">
+{% endblock %}
+
+
+{% block body %}
+
+<div class="registration-user log-out">
+    <h1>Log Out</h1>
+    <p>Are you sure to log out of your account?</p>
+    <div class="row confirmation">
+        <div class="col-lg-6 col-md-6 logout">
+            <a href="/logout-confirm" class="btn success">Yes</a>
+        </div>
+        <div class="col-lg-6 col-md-6 logout">
+            <a href="/profile" class="btn cancell">No</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

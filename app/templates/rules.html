@@ -1,0 +1,78 @@
+{%  extends 'base.html' %}
+
+
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/rules.css">
+{% endblock %}
+
+{% block body %}
+<div class="content">
+  <h1>Wordle Rules</h1>
+  <div class="color-match"> 
+    <p>Wordle follows elegantly simple rules.</p>
+    <p>Your main objective is to guess a secret word that is either 5, 6, or 7 letters long using as few guesses as possible.</p>
+    <p>To make a guess, you type a word with n-number of letters and press enter. However, all guesses must be real words that our game's dictionary allows; you can't simply make up a non-existent word like <span>"CFHSVF"</span> in an attempt to guess certain letters.</p>
+    <img class="random-letter-set rule-img shadow" src="/static/img/random-letter-set.png" alt="">
+    <p>Once you've submitted your guess, the game will provide feedback by color-coding each letter, indicating how close your guess was to the letters in the hidden word:</p>
+    <ul>
+      <li>A blue square means the letter does not appear in the secret word at all.</li>
+      <li>A yellow square means the letter is present in the secret word, but it's in the wrong position within the word.</li>
+      <li>A green square means the letter appears in the secret word, and it's in the correct position.</li>
+    </ul>
+    <p>By receiving green or yellow squares, you get closer to guessing the actual secret word, as it indicates you've correctly identified some letters.</p>
+    <img class="yellow-green-blue-mathes rule-img shadow" src="/static/img/yellow-green-blue-mathes.png" alt="">
+    <p>For instance, if your guess is <span>FELLOW</span> and you receive two green squares on the <span>F</span>, with yellow squares for the <span>L</span> and with gray squares for the <span>E</span>, <span>O</span>, and <span>W</span>, your next guess might be <span>FACTOR</span>, <span>FAILLE</span>, or <span>FAMILY</span>, as these words start with <span>F</span>, includes <span>L</span> and don't contain the letters <span>E</span>, <span>O</span>, or <span>W</span>.</p>
+      
+    <div id="carouselExampleDark" class="carousel carousel-dark slide shadow">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+          aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+          aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+          aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active" data-bs-interval="10000">
+            <img src="/static/img/factor-guessed.png" class="d-block w-100 rule-img-carousel" alt="wordle game">
+          </div>
+          <div class="carousel-item" data-bs-interval="2000">
+            <img src="/static/img/faille-guessed.png" class="d-block w-100 rule-img-carousel" alt="wordle game">
+          </div>
+          <div class="carousel-item">
+            <img src="/static/img/family-guessed.png" class="d-block w-100 rule-img-carousel" alt="wordle game">
+            
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+      data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+    </div>
+    
+  </div>
+
+  <div class="matches-blocks">
+    <p>Remember, the same letter can appear multiple times in the secret word, but there's no special color coding for letters that appear repeatedly. For example, if the secret word is <span>PEOPLE</span> and you guess a word with one <span>P</span> and one <span>E</span>, game won't inform you that both those letters appear twice in the secret word, but you'll be able to track it with the auxiliary blocks.</p>
+    <img class="rule-img shadow" src="/static/img/one-letter-p.png" alt="">
+    <p>Even though you guessed the location of <span>E</span> letter — <span>"Indirect Match"</span> suggests that somewhere else in the word is this letter.</p>
+    <p><span>"Direct match"</span> is responsible for a complete hit, i.e. the letter is in its correct place. <span>"Indirect match"</span> shows that the letter is present in the word, but in a different place.</p>
+    <p>Current match displays the result of the current word only, and Mathes All Time displays the result of all attempts</p>
+    <img class="rule-img shadow" src="/static/img/differ-ind-dir.png" alt="">
+  </div>
+
+  <div class="rule-wordlist">
+    <p>Another useful thing is the word list. Here you can see the last five words you have written. Under the word list you can see the counter of your attempts.</p>
+    <img class="rule-img shadow" src="/static/img/word-history.png" alt="">
+  </div>
+</div>
+  
+  </div>
+    {% endblock %}

@@ -1,13 +1,19 @@
 from flask import Flask, render_template, request, session, redirect, flash , url_for, make_response
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 from datetime import timedelta
 import os
 
-from all_func import word_finder, email_validation
+
+from all_func import word_finder, wtf_forms_errors
 import setting
 from sql_models import email_db_check, sign_up_page, login_page, review_page, profile_get_stats, profile_persdata
 from login_decorator import login_status
-from wtf_forms import LoginForm, SignUpForm
+from wtf_forms import LoginForm, SignUpForm, ReviewsForm, GameForm
+# import sqlalchemy_models
+from sqlalchemy_request import user_info  #UserInfo
+
+
 
 
 
@@ -26,6 +32,12 @@ app.config['dbconfig'] = {'host': DB_HOST,
                         'password': DB_PASSWORD,
                         'database': DATABASE,
                         'charset':'utf8mb4'}
+#app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/wordgame'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:developer123@localhost/wordgame'
+db = SQLAlchemy()
+db.init_app(app)
+
+
 
 
 @app.before_request
@@ -50,16 +62,16 @@ def game():
     #проверка первый раз пользователь зашел или нет
     global_direct, direct_match = word_finder.check_client_session()
 
-    if request.method == 'POST':
-        #если пост - значит пользователь что то написал -> нужно обновить количество попыток и взять клиентское слово, обновляет стату если зареган
-        client_word = request.form['word'].lower()
+    form = GameForm()
+    if form.validate_on_submit():
+        client_word = form.word.data.lower()
         word_finder.update_all_info(client_word=client_word, db_config=app.config.get('dbconfig'), user_id=session.get('logged_id'))
     try:
         #Даже если гет запрос, но человек до этого уже играл -> вернуть прошлое слово
         client_word = session['client_word']
         find_word = session.get('find_word')
         direct_match, indirect_match, global_direct, global_indirect, word_history = word_finder.word_finder(find_word, client_word)
-        return render_template('game.html', title = 'game',
+        return render_template('game.html', title = 'game', form=form,
                         find_word=find_word, 
                         client_word=client_word, 
                         word_history=word_history, 
@@ -72,7 +84,7 @@ def game():
     except:
         #Если не получается то базовый вывод
         #client_word = ''
-        return render_template('game.html', title = 'game', global_direct = global_direct, direct_match = direct_match)
+        return render_template('game.html', title = 'game', form=form, global_direct = global_direct, direct_match = direct_match)
 
 
 @app.route('/rules')
@@ -83,8 +95,10 @@ def rules():
 @app.route('/reviews', methods=['POST', 'GET'])
 @login_status
 def reviews():
-    if request.method == 'POST':
-        review = request.form['review']
+    form = ReviewsForm()
+
+    if form.validate_on_submit():
+        review = form.review.data
         result = review_page(db_config=app.config['dbconfig'], user_id=session['logged_id'], review=review)
         if result:
             flash('Review was send. Thanks!', category='success')
@@ -92,7 +106,7 @@ def reviews():
             flash('Something went wrong :(', category='error')
         return redirect('/reviews')
 
-    return render_template('reviews.html', title = 'reviews')
+    return render_template('reviews.html', title = 'reviews', form=form)
 
 
 @app.route('/profile')
@@ -119,18 +133,24 @@ def signup():
     if form.validate_on_submit():
         name = form.name.data
         password = form.psw.data
-        conf_password = form.psw_confirm.data
         email = form.email.data
 
-        if not email_validation.valid_email(email):
-            flash('email is not valid', category='error')
-        elif email_db_check(db_config=app.config['dbconfig'], email=email):
+        # if email_db_check(db_config=app.config['dbconfig'], email=email):
+        #     flash('email already registered', category='error')
+        # else:
+        #     sign_up_page(db_config=app.config['dbconfig'], name=name, email=email, password=generate_password_hash(password))
+        #     return redirect('/login')
+
+        user = user_info.query.filter_by(email=email).first()
+        if user:
             flash('email already registered', category='error')
-        elif password != conf_password:
-            flash('Passwords not equals!', category='error')
         else:
-            sign_up_page(db_config=app.config['dbconfig'], name=name, email=email, password=generate_password_hash(password))
+            user = user_info(name=name, email=email, password=password)
+            db.session.add(user)
+            db.session.commit()
             return redirect('/login')
+    else:
+        wtf_forms_errors.error_checks(form)
         
     return render_template('signup.html', form=form)
 
@@ -150,33 +170,14 @@ def login():
                 session['checkbox'] = True
             session['logged_id'] = logid
             url = session.get('path') if session.get('path') else '/'
-            print('EVERYTHING IS FINE')
             return redirect(url)
         flash('wrong password or email', category='error')
+
+    else:
+        wtf_forms_errors.error_checks(form)
 
     return render_template('login.html', form=form)
 
-
-
-
-
-    if request.method == 'POST':
-        # user_id = request.remote_addr
-        email = request.form.get('email')
-        password = request.form.get('password')
-        checkbox_value = request.form.get('checkbox')
-
-        logid = login_page(db_config=app.config['dbconfig'], email=email, password=password)
-        print(f'YOUR CURRENT LOG_ID: {logid}')
-        if logid:
-            if checkbox_value:
-                session['checkbox'] = True
-            session['logged_id'] = logid
-            url = session.get('path') if session.get('path') else '/'
-            return redirect(url)
-        flash('wrong password or email', category='error')
-
-    return render_template('login.html')
 
 
 @app.route('/logout', methods=['POST', 'GET'])
