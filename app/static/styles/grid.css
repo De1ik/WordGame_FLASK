@@ -1,0 +1,104 @@
+h1 {
+    text-align: center;
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+}
+
+
+
+/* .card {
+    margin-top: 0;
+    margin-bottom: 0;
+} */
+
+
+
+.personal-data{
+    max-width: 90%; /* Устанавливаем максимальную ширину картинки в 100% от родительского элемента */
+    height: auto; /* Автоматически рассчитываем высоту, чтобы сохранить пропорции картинки */
+    display: block; /* Убираем возможные пробелы под картинкой */
+    margin: 0 auto;
+    /* margin-top: 1em;
+    margin-bottom: 0; */
+    text-align: center;
+}
+
+.page-grid {
+    /* padding-top: 0.8em;
+    padding-bottom: 0.7em; */
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cont-gm {
+    text-align: justify;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    padding-inline: 1em;
+}
+
+
+.prd-card {
+    display: block;
+    text-align: left;
+    margin: 0;
+}
+
+h5{
+    text-align: center;
+    font-weight: 600;
+}
+
+.btn-for-rules {
+    display: flex;
+    justify-content: center;
+}
+
+
+.btn-for-game {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-r-rules{
+    border-style: solid;
+    border-radius: 7px;
+    border-color: rgb(7, 96, 44);
+    color: rgb(255, 255, 255);
+    background-color: rgb(9, 209, 86);
+}
+
+.btn-play {
+    border-style: solid;
+    border-radius: 7px;
+    border-color: rgb(66, 6, 6);
+    color: rgb(255, 255, 255);
+    background-color: rgb(185, 57, 57);
+}
+
+.btn-r-rules:hover {
+    border-color: rgb(83, 202, 133);
+    color: rgb(255, 255, 255);
+    background-color: rgb(13, 117, 54);
+}
+
+.btn-play:hover {
+    border-color: rgb(66, 6, 6);
+    color: rgb(255, 255, 255);
+    background-color: rgb(110, 10, 10);
+}
+
+@media (max-width: 1200px) {   
+    .cont-gm {
+        gap: 50px;
+    }
+}
+
+
+@media (max-width: 930px) {   
+    .cont-gm {
+        display: block;
+        text-align: center;
+    }
+}

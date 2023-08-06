@@ -1,0 +1,59 @@
+h1 {
+    text-align: center;
+    margin: 1em;
+}
+
+.rule-img,
+#carouselExampleDark {
+    max-width: 80%; /* Устанавливаем максимальную ширину картинки в 100% от родительского элемента */
+    height: auto; /* Автоматически рассчитываем высоту, чтобы сохранить пропорции картинки */
+    display: block; /* Убираем возможные пробелы под картинкой */
+    margin: 0 auto;
+    margin-bottom: 2em;
+    margin-top: 2em;
+}
+
+.content {
+    margin-inline: 4em;
+    font-size: 1.2em;
+}
+
+.content span{
+    font-weight:600;
+}
+
+.btn-for-game p{
+    display: flex;
+    justify-content: center;
+} 
+
+.btn-play-rule {
+    border-style: solid;
+    border-radius: 7px;
+    border-color: rgb(66, 6, 6);
+    color: rgb(255, 255, 255);
+    background-color: rgb(185, 57, 57);
+    margin-bottom: 2em;
+}
+
+
+.btn-play-rule:hover {
+    border-color: rgb(66, 6, 6);
+    color: rgb(255, 255, 255);
+    background-color: rgb(110, 10, 10);
+}
+
+
+@media (max-width: 900px) {
+    .rule-img,
+    #carouselExampleDark {
+        max-width: 100%;
+        margin-inline: 0;
+    }
+}
+
+@media (max-width: 700px) {
+    .content {
+        margin-inline: 2em;
+    }
+}
