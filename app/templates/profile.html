@@ -9,19 +9,23 @@
 <div class="all-info">
   <h1>Profile</h1>
   <div class="statistics shadow">
-    <h3>Statistics</h3>
+    <h3>Wordle Statistics</h3>
     <div class="profile">
       <div class="cont-st">
         <div class="stats">
           <p>Total number of guessed words: <span>{{numb_guessed}}</span></p>
-          <p>Words guessed in first try: <span>{{first_try}}</span></p>
+          <p>5-letter words guessed: <span>{{wd_len_5}}</span></p>
+          <p>6-letter words guessed: <span>{{wd_len_6}}</span></p>
+          <p>7-letter words guessed: <span>{{wd_len_7}}</span></p>
           <p>Average attempts per word: <span>{{average_attemp}}</span></p>
         </div>
        
         <div class="stats">
           <p>Total number of attempts: <span>{{numb_attempt}}</span></p>
+          <p>Words guessed in first try: <span>{{first_try}}</span></p>
           <p>In three attempts guessed: <span>{{three_attemp}}</span></p>
-          <p>Maximum attempts per word: <span>{{max_attemp}}</span></p>
+          <p>Maximum attempts per word: <span>{{max_attempt}}</span></p>
+          <p>You are: <span>{{wd_skill_lvl}}</span></p>
         </div>
       </div>
     </div>

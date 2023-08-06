@@ -1,31 +1,41 @@
 from flask import session
+from flask_login import current_user
 
-from . import set_word
+from .set_word import set_word
+from app import db
+
 
 
 #number of letters
-word_len = 6
-word_history_lens = 6
 
-def reset():
-   """Ресетит все данные"""
-   print('RESET WAS DONE')
-   session['global_direct'] = ['_']*word_len
-   session['global_indirect'] = list()
-   session['word_history'] = [' ']*word_history_lens
-   session['last_time_win'] = False
-   session['attempt_number'] = 0
-   session['find_word'] = set_word.set_6_word().lower()
+word_len = 5
 
-   return session['global_direct'], session['global_indirect'], session['word_history'], session['last_time_win']
+word_history_lens = 5
 
-def check_client_session():
+def check_client_session(wd_len):
+    global word_len
+    word_len = wd_len
     #если пользователь первый раз - добавить его в сессии и запустить игру
     global_direct = direct_match = ' '.join(['_']*word_len)
     if 'user_game' not in session:
         session['user_game'] = True
         reset()
     return global_direct, direct_match
+
+
+def reset():
+   """Ресетит все данные"""
+   print('RESET WAS DONE')
+   session.pop('client_word', None)
+   session['global_direct'] = ['_']*word_len
+   session['global_indirect'] = list()
+   session['word_history'] = [' ']*word_history_lens
+   session['last_time_win'] = False
+   session['attempt_number'] = 0
+   session['find_word'] = set_word(word_len)
+   print(f"FIND WORD = {session['find_word']}")
+
+   return session['global_direct'], session['global_indirect'], session['word_history'], session['last_time_win']
 
 
 def check_win(find_word, client_word):
@@ -86,5 +96,6 @@ def word_finder(find_word, client_word):
                                                global_direct=session['global_direct'], 
                                                indirect_match=indirect_match))
     session['global_indirect'] = list(result_gl_indirect)
+
     
     return direct_match, indirect_match, ' '.join(session['global_direct']), ' '.join(session['global_indirect']), word_history

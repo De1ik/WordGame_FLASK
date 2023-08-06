@@ -32,6 +32,15 @@ body {
     margin-top: 3em;
 }
 
+.log-out p{
+    margin-top: 1em;
+}
+
+.update-info form{
+    margin-top: 2.5em;
+}
+
+
 .registration-user.sign-up{
     max-width: 360px;
 }

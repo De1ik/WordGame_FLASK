@@ -1,17 +1,19 @@
-from app import app, db, login_manager
+from app import app, login_manager, db
+
 
 from flask import render_template, request, session, redirect, flash , url_for
 from flask_login import logout_user, login_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta, datetime
 
-from .models import UserInfo, Reviews, Statistics
-from .wtf_forms import LoginForm, SignUpForm, ReviewsForm, GameForm, UpdateInfoForm
+from .models import UserInfo, Reviews, WordleStatistics
+from .wtf_forms import LoginForm, SignUpForm, ReviewsForm, UpdateInfoForm
 
 from .utilities import word_finder
 
 from .utilities.wtf_forms_errors import error_checks
 from .utilities.login_status import login_status
+from .utilities.delate_all_sessions import delete_sessions
 
 
 
@@ -22,6 +24,8 @@ from .utilities.login_status import login_status
 #         app.permanent_session_lifetime = timedelta(days=3)
 #     else:
 #         app.permanent_session_lifetime = timedelta(minutes=15)
+
+
 
 
 @login_manager.user_loader
@@ -36,49 +40,17 @@ def index():
 
 @app.route('/games', methods=['POST', 'GET'])
 def games():
-    #проверка первый раз пользователь зашел или нет
-    global_direct, direct_match = word_finder.check_client_session()
-    form = GameForm()   
-
-    if form.validate_on_submit() and form.validate():
-        client_word = form.word.data.lower()
-        #update client word and count attempts
-        session['attempt_number'] = session.get('attempt_number', 0) + 1
-        session['client_word'] = client_word
-
-        try:
-            user = Statistics.query.filter_by(user_id=current_user.user_id).first()
-            user.update_user_stats(
-                client_word=session.get('client_word'),
-                find_word=session.get('find_word'),
-                attempt_number=session.get('attempt_number'))
-        except Exception as ex:
-            print(ex)
-    else:
-        error_checks(form)
-    
-    try:
-        #Даже если гет запрос, но человек до этого уже играл -> вернуть прошлое слово
-        client_word = session['client_word']
-        find_word = session.get('find_word')
-        direct_match, indirect_match, global_direct, global_indirect, word_history = word_finder.word_finder(find_word, client_word)
-        return render_template('game.html', title = 'WORDLE', form=form, games='active',
-                        find_word=find_word, 
-                        client_word=client_word, 
-                        word_history=word_history, 
-                        direct_match= direct_match, 
-                        indirect_match=indirect_match,
-                        global_direct = global_direct,
-                        global_indirect= global_indirect, 
-                        word_len=word_finder.word_len, 
-                        attempt_number=session['attempt_number'])
-    except:
-        return render_template('game.html', title = 'WORDLE', games='active', form=form, global_direct = global_direct, direct_match = direct_match)
+    return render_template('games.html', games='active')
 
 
 @app.route('/rules')
 def rules():
     return render_template('rules.html', rules='active')
+
+
+@app.route('/wordle-rules')
+def wordle_rules():
+    return render_template('wordle-rules.html', rules='active')
 
 
 @app.route('/review', methods=['POST', 'GET'])
@@ -104,12 +76,15 @@ def review():
 @login_required
 def profile():
     try:
-        stats = Statistics.query.filter_by(user_id=current_user.user_id).first()
+        stats = WordleStatistics.query.filter_by(user_id=current_user.user_id).first()
         return render_template('profile.html', title = 'Profile', profile='active',
                             numb_guessed=stats.total_guessed, numb_attempt=stats.total_attempt,
                             first_try=stats.first_try, three_attemp=stats.third_try,
-                            max_attemp=stats.max_attempt, average_attemp=stats.average_attempt)
+                            max_attempt=stats.max_attempt, average_attemp=stats.average_attempt,
+                            wd_len_5 = stats.wd_len_5, wd_len_6 = stats.wd_len_6, wd_len_7 = stats.wd_len_7,
+                            wd_skill_lvl = stats.wd_skill_lvl)
     except Exception as ex:
+        print(ex)
         return redirect(url_for('index'))
 
 
@@ -151,7 +126,7 @@ def signup():
             user = UserInfo(name=name, email=email, password=password)
             db.session.add(user)
             user = UserInfo.query.filter_by(email=user.email).first()
-            stats = Statistics(user_id=user.user_id)
+            stats = WordleStatistics(user_id=user.user_id)
             db.session.add(stats)
             db.session.commit()
             return redirect(url_for('login'))
@@ -172,9 +147,11 @@ def login():
 
         user = UserInfo.query.filter_by(email=email).first()
         if user and check_password_hash(user.password, psw_cl):
+            
             print(f'USER ID {user.user_id}')
             login_user(user, remember=checkbox_value)
             next_page = request.args.get('next') or url_for('index')
+            delete_sessions()
             return redirect(next_page)
 
         flash('wrong password or email', category='error')
