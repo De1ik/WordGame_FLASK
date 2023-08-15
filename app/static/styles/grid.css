@@ -89,9 +89,21 @@ h5{
     background-color: rgb(110, 10, 10);
 }
 
+.footer {
+    margin: 3em;
+}
+
 @media (max-width: 1200px) {   
     .cont-gm {
         gap: 50px;
+    }
+
+    .prd-card {
+        margin-bottom: 2em;
+    }
+
+    .footer {
+        margin: 0;
     }
 }
 

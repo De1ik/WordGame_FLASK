@@ -12,7 +12,7 @@ def set_skill_lvl(avg_att):
     elif avg_att >= 2 and avg_att < 3:
         return 'genius'
     elif avg_att >= 1 and avg_att < 2:
-        return 'you hacked the game?'
+        return 'AI'
     elif avg_att >= 0 and avg_att < 1:
         return 'you hacked the game?'
     else:
