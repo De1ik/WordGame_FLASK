@@ -1,6 +1,6 @@
 import os
 
-from vsearch.app import app
+from app import app
 
 S_DEBUG = os.getenv('DB_HOST')
 
