@@ -18,7 +18,7 @@
     
     <div class="col-lg-5 col-md-12 review">
       <div class="rev-comp">
-        <form class="form-word-text " method="POST" action="/reviews">
+        <form class="form-word-text " method="POST" action="/review">
           <h3 class="form-label">Write your review:</h3>
           {% for category, msg in get_flashed_messages(True) %}
           <div class="flash {{category}}">{{msg}}</div>
