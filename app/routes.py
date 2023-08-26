@@ -35,7 +35,7 @@ def load_user(id):
 
 @app.route('/')
 def index():
-    return render_template('templates/index.html', index='active')
+    return render_template('index.html', index='active')
 
 
 @app.route('/games', methods=['POST', 'GET'])
