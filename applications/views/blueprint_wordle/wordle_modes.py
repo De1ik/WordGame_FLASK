@@ -2,10 +2,10 @@ from flask import Blueprint, render_template, session, request
 from flask_login import current_user
 
 
-from app.wtf_forms import GameForm
-from app.views.blueprint_wordle.wordle_utilites.wordle_finder import WordleFinder
-from app.models import db
-from app.models import Wordle5Letters, Wordle6Letters, Wordle7Letters
+from applications.wtf_forms import GameForm
+from applications.views.blueprint_wordle.wordle_utilites.wordle_finder import WordleFinder
+from applications.models import db
+from applications.models import Wordle5Letters, Wordle6Letters, Wordle7Letters
 from .wordle_utilites.wordle_game_class import WordleGameTemp
 
 wordle_index = Blueprint('wordle', __name__)

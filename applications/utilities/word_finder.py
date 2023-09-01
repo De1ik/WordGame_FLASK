@@ -2,7 +2,7 @@ from flask import session
 from flask_login import current_user
 
 from .set_word import set_word
-from app import db
+from applications import db
 
 
 

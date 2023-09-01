@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from datetime import datetime
 
-from app import db
+from applications import db
 from .utilities.skill_lvl_wrdle import set_skill_lvl
 
 

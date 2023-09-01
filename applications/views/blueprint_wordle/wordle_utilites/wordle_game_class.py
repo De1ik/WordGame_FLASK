@@ -2,8 +2,8 @@ from flask import session, request
 from flask_login import current_user
 
 
-from app.models import WordleStatistics
-from app.utilities.wtf_forms_errors import error_checks
+from applications.models import WordleStatistics
+from applications.utilities.wtf_forms_errors import error_checks
 
 
 
