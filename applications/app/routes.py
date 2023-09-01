@@ -4,22 +4,22 @@ from applications import app, login_manager, db
 from flask import render_template, request, session, redirect, flash , url_for
 from flask_login import logout_user, login_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import timedelta, datetime
+# from datetime import timedelta, datetime
 
 from models import UserInfo, Reviews, WordleStatistics
 from wtf_forms import LoginForm, SignUpForm, ReviewsForm, UpdateInfoForm
 
-from .utilities import word_finder
+# from utilities.word_finder import word_finder
 
-from .utilities.wtf_forms_errors import error_checks
-from .utilities.login_status import login_status
-from .utilities.delate_all_sessions import delete_sessions
+from utilities.wtf_forms_errors import error_checks
+from utilities.login_status import login_status
+from utilities.delate_all_sessions import delete_sessions
 
 
 
 # @app.before_request
 # def make_session_permanent():
-#     session.permanent = True
+#     session.permanent = Trueword_finder
 #     if 'checkbox' in session:
 #         app.permanent_session_lifetime = timedelta(days=3)
 #     else:
