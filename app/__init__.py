@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_manager, LoginManager
 from flask_migrate import Migrate
 
-from config import *
+from ..config import *
 
 
 app = Flask(__name__)
