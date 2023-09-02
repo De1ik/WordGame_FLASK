@@ -1,10 +1,10 @@
 from applications import app, login_manager, db
 
 
-from flask import render_template, request, session, redirect, flash , url_for
+from flask import render_template, request, redirect, flash , url_for
 from flask_login import logout_user, login_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import timedelta, datetime
+# from datetime import timedelta, datetime
 
 from .models import UserInfo, Reviews, WordleStatistics
 from .wtf_forms import LoginForm, SignUpForm, ReviewsForm, UpdateInfoForm

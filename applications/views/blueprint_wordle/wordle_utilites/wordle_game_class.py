@@ -64,35 +64,3 @@ class WordleGameTemp:
         all_data = self.data_for_html()
         return all_data
         
-        
-
-
-
-
-
-
-
-
-
-# @wordle_6_lt_bp.route('/6-letters', methods=['GET', 'POST'])
-# def wordle_6_lt():
-#     #проверка первый раз пользователь зашел или нет
-#     wd_len = 6
-#     form = GameForm()
-#     game = wd_finder.WordFinder(word_len=wd_len)
-#     wordle_game = WordleGameTemp(wd_len, form, game)
-#     all_data = wordle_game.main()
-#     if all_data:
-#         direct_match, indirect_match, global_direct, global_indirect, word_history, attempt_number, find_word, client_word = all_data
-#         return render_template('wordle.html', title = 'WORDLE', form=form, games='active',
-#                             word_len = wd_len, 
-#                             find_word = find_word, 
-#                             client_word = client_word,
-#                             word_history = word_history,
-#                             direct_match = direct_match, 
-#                             indirect_match = indirect_match,
-#                             global_direct = global_direct,
-#                             global_indirect = global_indirect,
-#                             attempt_number = attempt_number)
-    
-#     return render_template('wordle.html', title = 'WORDLE', form=form, global_direct = game.direct_template, direct_match = game.direct_template)
