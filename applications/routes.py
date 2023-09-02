@@ -1,4 +1,4 @@
-from applications import app, login_manager, db
+from applications import app, login_manager, db, cashe
 
 
 from flask import render_template, request, redirect, flash , url_for
@@ -34,26 +34,31 @@ def load_user(id):
 
 
 @app.route('/')
+@cashe.cached(timeout=300)
 def index():
     return render_template('index.html', index='active')
 
 
 @app.route('/games', methods=['POST', 'GET'])
+@cashe.cached(timeout=300)
 def games():
     return render_template('games.html', games='active')
 
 
 @app.route('/rules')
+@cashe.cached(timeout=300)
 def rules():
     return render_template('rules.html', rules='active')
 
 
 @app.route('/wordle-rules')
+@cashe.cached(timeout=300)
 def wordle_rules():
     return render_template('wordle-rules.html', rules='active')
 
 
 @app.route('/review', methods=['POST', 'GET'])
+@cashe.cached(timeout=300)
 @login_required
 def review():
     form = ReviewsForm()
@@ -73,6 +78,7 @@ def review():
 
 
 @app.route('/profile')
+@cashe.cached(timeout=15)
 @login_required
 def profile():
     try:
@@ -110,6 +116,7 @@ def update_profile_info():
 
 
 @app.route('/sign-up', methods=['GET', 'POST'])
+@cashe.cached(timeout=300)
 @login_status
 def signup():
     form = SignUpForm()
@@ -137,6 +144,7 @@ def signup():
 
 
 @app.route('/login', methods=['POST', 'GET'])
+@cashe.cached(timeout=300)
 @login_status
 def login():
     form = LoginForm()
@@ -163,12 +171,14 @@ def login():
 
 
 @app.route('/logout', methods=['POST', 'GET'])
+@cashe.cached(timeout=300)
 @login_required
 def logout():
     return render_template('logout.html')
 
 
 @app.route('/logout-confirm', methods=['POST', 'GET'])
+@cashe.cached(timeout=300)
 @login_required
 def logout_confirm():
     logout_user()
@@ -176,5 +186,6 @@ def logout_confirm():
 
 
 @app.errorhandler(404)
+@cashe.cached(timeout=300)
 def eror_404(e):
     return render_template('404.html'), 404
