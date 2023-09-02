@@ -2,7 +2,7 @@ import os
 
 from applications import app
 
-h = 37
+h = 'qwerty'
 
 # S_DEBUG = os.getenv('DB_HOST')
 S_DEBUG = False
