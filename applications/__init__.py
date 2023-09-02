@@ -13,6 +13,7 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+app.config['CACHE_DEFAULT_TIMEOUT'] = 300
 app.config['CASHE_TYPE'] = 'simple'
 cashe = Cache(app)
 
