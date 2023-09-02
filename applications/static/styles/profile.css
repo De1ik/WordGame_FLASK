@@ -12,9 +12,9 @@ h1{
 .statistics,
 .personal-data,
 .logout{
-    max-width: 80%; /* Устанавливаем максимальную ширину картинки в 100% от родительского элемента */
-    height: auto; /* Автоматически рассчитываем высоту, чтобы сохранить пропорции картинки */
-    display: block; /* Убираем возможные пробелы под картинкой */
+    max-width: 80%;
+    height: auto;
+    display: block;
     margin: 0 auto;
     margin-top: 1em;
     margin-bottom: 1em;
@@ -99,16 +99,33 @@ h3 {
 }
 
 
-@media (max-width: 1200px) {   
+@media (max-width: 1200px) {
     .cont-st {
         gap: 50px;
     }
+
+    .statistics,
+    .personal-data,
+    .logout{
+        max-width: 85%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        text-align: center;
+    }
+
 }
 
 
-@media (max-width: 930px) {   
+@media (max-width: 930px) {
     .cont-st {
         display: block;
+        text-align: center;
+    }
+
+    .pers-data {
         text-align: center;
     }
 }

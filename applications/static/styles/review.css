@@ -8,6 +8,7 @@ h1{
     font-size: 1.3em;
 }
 
+
 h3 {
     text-align: center;
 }
@@ -90,8 +91,17 @@ textarea {
     }
 
     textarea {
+
         width: 18em;
         height: 7.6em;
+    }
+
+    .header-rev{
+        display: none;
+    }
+
+    .text-rev {
+        margin: 0;
     }
 }
 

@@ -5,7 +5,6 @@ body {
 
 
 .registration-user{
-    margin-top: 1.5em;
     border-style: solid;
     text-align: center;
     background-color: white;
@@ -23,7 +22,7 @@ body {
     height: auto;
     display: block;
     margin: 0 auto;
-    margin-top: 1em;
+    margin-top: 3em;
     margin-bottom: 1em;
 }
 
@@ -49,7 +48,7 @@ body {
     display: inline-block;
     width: 190px;
     text-align: center;
-    
+
 }
 
 .default-box {
@@ -88,7 +87,7 @@ body {
     padding-bottom: 2em;
 }
 
-.logout {    
+.logout {
     display: flex;
     justify-content: space-evenly;
 }
@@ -135,22 +134,18 @@ body {
 
 
 
-/* @media (min-width: 1440px) {
+@media (min-width: 1440px) {
     .registration-user.login{
         margin-top: 13em;
     }
 }
 
-@media (max-width: 767.1px) {
-    .registration-user{
-        margin-inline:10em;
-    }
-}
 
 
 @media (max-width: 576px) {
     .registration-user{
-        margin-inline: 4em;
+        margin-top: 5em;
+        margin-inline: 3em;
     }
 }
 
@@ -158,5 +153,6 @@ body {
 @media (max-width: 375px) {
     .registration-user {
         margin-inline: 1em;
+
     }
-} */
+}

@@ -43,6 +43,26 @@
     background-color: rgb(59, 58, 58);
 }
 
+.index-slog {
+    margin-top: 2em;
+    font-size: 2em;
+    text-align: center;
+    display: none;
+}
+
+.w2 {
+    color: rgb(7, 99, 148);
+}
+.w4 {
+    color: rgb(7, 148, 45);
+}
+.w3 {
+    color: rgb(148, 127, 7);
+}
+.w1 {
+    color: rgb(148, 56, 7);
+}
+
 @media (max-width: 900px) {
     .ind-img,
     #carouselExampleDark {
@@ -56,13 +76,23 @@
 }
 
 @media (max-width: 500px) {
+    h1 {
+        margin-top: 1em;
+    }
+
     .ind-img,
     #carouselExampleDark {
         max-width: 100%;
         margin-inline: 0.3em;
+        margin-top: 1em;
     }
 
     .slider-desc{
+        margin-top: 1.3em;
         margin-inline: 0.5em;
+    }
+
+    .index-slog {
+        display: block;
     }
 }
